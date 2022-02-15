@@ -1,58 +1,98 @@
 package com.example.spring.firstproject.controller;
 
-
 import java.util.List;
-import java.util.Map;
 
-import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+//import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.example.spring.firstproject.config.NoticeDTO;
 import com.example.spring.firstproject.service.NoticeService;
 
 @RestController
 public class NoitceController {
-	
-	
+
+	@Autowired
+	private NoticeService noticeService;
+
 	@RequestMapping("/")
-	public ModelAndView Index(ModelAndView mav) {
+	public ModelAndView Index(ModelAndView mav) throws Exception {
+		System.out.println("Controller - index");
 		mav.setViewName("index");
 		return mav;
 	}
-	
-	@Resource
-	private NoticeService noticeService;
-	
+
 	@RequestMapping("/list")
-	public ModelAndView AlllistView(Map<String, Object>map) throws Exception {
+	public ModelAndView noticeList(HttpServletRequest request, NoticeDTO noticeDto) throws Exception {
+		System.out.println("Controller - list");
 		ModelAndView mav = new ModelAndView();
-		List<Map<String, Object>> AllList = noticeService.SelectAllList();
-		mav.addObject("AllList",AllList);		
+
+		int totalCount = this.noticeService.SelectNoticeListCount(request, noticeDto);
+
+		List<NoticeDTO> noticeList = null;
+		if (totalCount > 0) {
+			noticeList = this.noticeService.SelectNoticeList(request, noticeDto);
+		}
+
+		mav.addObject("totalCount", totalCount);
+		mav.addObject("noitceList", noticeList);
+		mav.addObject("noticeDto", noticeDto);
+		
 		mav.setViewName("list");
 		return mav;
 	}
 	
 	
-	@RequestMapping("/writenotice")
-	public ModelAndView NoticeWrite(ModelAndView mav) {
-		mav.setViewName("noticeWrite");
+	
+	
+	@RequestMapping(value = "/formWriteNotice",method = RequestMethod.GET)
+	public ModelAndView fromWriteNotice() {
+		System.out.println("Controller - formWriteNotice");
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("formWriteNotice");
 		return mav;
 	}
 	
-//	
-//	@RequestMapping(value="list")  // => list url 요청
-//	public ModelAndView AllListView(Map<String, Object>map) throws Exception{ //db와 view 동시 송출
-//		ModelAndView mav = new ModelAndView();
-//		
-//		List<Map<String, Object>> AllList = noticeService.SelectAllList(); //전체 쿼리 조회.
-//		
-//		mav.addObject("AllList",AllList);// ModelAndView 에 전달할 key/Value 값 저장
-//		mav.setViewName("list");// 전달할 이름
-//		
-//		return mav;
-//		
+	
+	@RequestMapping(value = "noticeInfoView", method = RequestMethod.GET)
+	public ModelAndView noticeInfoView(@RequestParam int idx, HttpSession session)throws Exception{
+		System.out.println("Controller - noticeInfoView");
+		ModelAndView mav = new ModelAndView();
+		
+		noticeService.updateReadCount(idx,session);	
+		
+		mav.addObject("idx", noticeService.noticeInfoView(idx));
+		mav.addObject("", mav)
+		
+		mav.setViewName("noticeInfoView");		
+		return mav;
+		
 	}
+	
+	@RequestMapping(value = "/ProWriteNotice", method = RequestMethod.POST)
+	public ModelAndView ProWriteNotice(@ModelAttribute NoticeDTO noticeDto) throws Exception{
+		System.out.println("Controller - ProWriteNotice");
+		ModelAndView mav = new ModelAndView();	
+		
+		noticeService.ProWriteNotice(noticeDto);
+		
+		mav.setViewName("redirect:list");
+		return mav;
+	}
+	
+	
 
+	
+	
 
+}

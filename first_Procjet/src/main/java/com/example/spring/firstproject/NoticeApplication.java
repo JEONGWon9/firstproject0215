@@ -28,9 +28,12 @@ public class NoticeApplication {
 		Resource[] res = new PathMatchingResourcePatternResolver().getResources("classpath:mybatis/mapper/*.xml");
 		sessionFactory.setMapperLocations(res);
 		
+		
 		return sessionFactory.getObject();
 		
 		
 	}
+	
+	 
 
 }

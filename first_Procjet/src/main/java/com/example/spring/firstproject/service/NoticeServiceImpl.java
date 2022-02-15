@@ -3,12 +3,17 @@ package com.example.spring.firstproject.service;
 //비지니스 로직 처리 
 
 import java.util.List;
-import java.util.Map;
+
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.spring.firstproject.config.NoticeDTO;
 import com.example.spring.firstproject.mapper.NoticeMapper;
+
 
 
 
@@ -16,12 +21,49 @@ import com.example.spring.firstproject.mapper.NoticeMapper;
 public class NoticeServiceImpl implements NoticeService{
 	
 	@Autowired
-	NoticeMapper noticemapper;
+	private NoticeMapper noticemapper;
+
 
 	@Override
-	public List<Map<String, Object>> SelectAllList() throws Exception {
+	public List<NoticeDTO> SelectNoticeList(HttpServletRequest request, NoticeDTO noticeDto) throws Exception {
 		// TODO Auto-generated method stub
-		return noticemapper.SelectAllList();
+		return noticemapper.SelectNoticeList();
+	}
+
+	@Override
+	public int SelectNoticeListCount(HttpServletRequest request, NoticeDTO noticeDto) throws Exception {
+		// TODO Auto-generated method stub
+		return noticemapper.SelectNoticeListCount();
+	}
+
+	@Override
+	public void ProWriteNotice(NoticeDTO noticeDto) {
+	
+		String title = noticeDto.getTitle();
+		String writer = noticeDto.getWriter();
+		String pw = noticeDto.getPw();
+		String content = noticeDto.getContent();
+		
+		noticeDto.setTitle(title);
+		noticeDto.setWriter(writer);
+		noticeDto.setPw(pw);
+		noticeDto.setContent(content);	
+		
+		noticemapper.ProWriteNotice(noticeDto);		
+	}
+
+
+	@Override
+	public NoticeDTO noticeInfoView(int idx) {
+		// TODO Auto-generated method stub
+		return noticemapper.noticeInfoView(idx);
+	}
+
+	@Override
+	public void updateReadCount(int idx, HttpSession session) {
+		
+		
 	}
 
 }
+	

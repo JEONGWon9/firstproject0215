@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+ <!-- 
+ namespace :  DB접근 패키지  Interface명 까지 접근위치를 지정
+ select id : id는 interface의 메소드 명과 완벽하게 일치! 해야한다.
+ 
+ -->
+ 
+<mapper namespace="com.example.spring.firstproject.mapper.NoticeMapper">
+ 
+    <select id="SelectAllList" resultType="hashmap">
+     SELECT * FROM test_jsw
+    </select>
+    
+   <select id="SelectNoticeListCount" resultType="int">
+		SELECT COUNT(*) FROM board_jsw	
+	</select>
+	
+	<select id="SelectNoticeList" resultType="com.example.spring.firstproject.config.NoticeDTO">
+	 SELECT * from board_jsw ORDER BY idx DESC
+	</select> 
+	
+	<insert id="ProWriteNotice" parameterType="com.example.spring.firstproject.config.NoticeDTO">
+		INSERT INTO board_jsw 
+		(IDX,TITLE,WRITER,PW,CONTENT,READCOUNT,WRITEDATE,GRPNO,GRPORD,DEPTH)
+		 VALUES
+		  (idx_seq.NEXTVAL,#{title},#{writer},#{pw},#{content},0,sysdate,0,0,0)
+		
+	</insert>
+	
+	<select id="noticeInfoView" resultType="com.example.spring.firstproject.config.NoticeDTO">
+	 SELECT * from board_jsw WHERE idx = #{idx}
+	</select> 
+ 
+</mapper>
+
