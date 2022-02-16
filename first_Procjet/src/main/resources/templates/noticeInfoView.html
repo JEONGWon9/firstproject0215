@@ -2,29 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+	crossorigin="anonymous"></script>
 
 <title>Insert title here</title>
 </head>
 <body>
 
-<div>
-		<H1>InfoView</H1>
-		<table class="table" align="center">
-			<thead>
-				<tr>
-					<th>번호</th>
-					<th>글쓴이</th>
-					<th>제목</th>
-					<th>작성일</th>
-					
-				</tr>
-			</thead>
-			<tbody>
-				
-			</tbody>
+	<div class="container">
+		<H1>InfoView</H1>		
+	
+		<input id="idx" type="hidden">
+		<table class="table table-bordered" >
+		<tr th:object=${noticeInfoView}>
+			<th> 작성자	</th>
+			<td th:text="${noticeInfoView.writer}">  </td>
+			<th> 작성일</th>
+			<td th:text="${noticeInfoView.writeDate}">  </td>
+		</tr>
+		<tr>
+			<th> 제목</th>
+			<td th:text="${noticeInfoView.title}"> </td>
+			<td> 조회수 </td>
+			<td th:text="${noticeInfoView.readCount}"> </td>
+		</tr>
+		<tr>
+			<th> 내용	</th>
+			<td colspan="4" th:text="${noticeInfoView.content}"> 			
+			</td>
+		</tr>
+		
 		</table>
+		
+		<a class="btn btn-primary" th:href="@{/list}">목록</a>
+		<a class="btn btn-warning" th:href="@{/noticeUpdate(idx=${noticeInfoView.idx})}" >수정</a>
+		<a class="btn btn-primary" >답글</a>
+		<a class="btn btn-danger" th:href="@{/noticeDelete(idx=${noticeInfoView.idx})}" >삭제 </a>
 	</div>
 
 

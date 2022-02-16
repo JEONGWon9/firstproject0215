@@ -31,9 +31,31 @@
 		
 	</insert>
 	
-	<select id="noticeInfoView" resultType="com.example.spring.firstproject.config.NoticeDTO">
+	<select id="noticeInfoView" parameterType="int" resultType="com.example.spring.firstproject.config.NoticeDTO">
 	 SELECT * from board_jsw WHERE idx = #{idx}
 	</select> 
+	
+	<update id="ProUpdateNotice">
+	UPDATE board_jsw SET 
+		title=#{title},
+		writer=#{writer},
+		pw=#{pw},
+		content=#{content} 
+		WHERE idx= #{idx}
+		
+	
+	</update>
+	
+	<update id="noticeReadCount">
+		UPDATE board_jsw SET readcount = readcount+1 WHERE idx = #{idx}	
+	</update>
+	
+	
+	
+	<delete id="DelteNotice">
+		DELETE FROM board_jsw WHERE idx=#{idx}	
+	
+	</delete>
  
 </mapper>
 

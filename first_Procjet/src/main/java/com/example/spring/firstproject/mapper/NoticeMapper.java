@@ -17,8 +17,15 @@ public interface NoticeMapper {
 
 	void ProWriteNotice(NoticeDTO noticeDto);
 
+
 	NoticeDTO noticeInfoView(int idx);
 
 	int SelectNoticeListCount();
+
+	void ProUpdateNotice(NoticeDTO noticeDto);
+
+	void DelteNotice(int idx);
+
+	void noticeReadCount(int idx);
 
 }

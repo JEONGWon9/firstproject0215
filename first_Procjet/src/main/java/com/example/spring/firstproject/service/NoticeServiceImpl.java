@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import com.example.spring.firstproject.config.NoticeDTO;
 import com.example.spring.firstproject.mapper.NoticeMapper;
 
+import lombok.extern.log4j.Log4j;
+
 
 
 
@@ -54,14 +56,39 @@ public class NoticeServiceImpl implements NoticeService{
 
 
 	@Override
-	public NoticeDTO noticeInfoView(int idx) {
-		// TODO Auto-generated method stub
+	public NoticeDTO noticeInfoView(int idx) {		
 		return noticemapper.noticeInfoView(idx);
 	}
 
+
 	@Override
-	public void updateReadCount(int idx, HttpSession session) {
+	public void noticeUpdate(NoticeDTO noticeDto) {
+		int idx = noticeDto.getIdx();		
+		String title = noticeDto.getTitle();
+		String writer = noticeDto.getWriter();	
+		String content = noticeDto.getContent();
 		
+		noticeDto.setIdx(idx);
+		noticeDto.setTitle(title);
+		noticeDto.setWriter(writer);		
+		noticeDto.setContent(content);	
+		
+		
+		 noticemapper.ProUpdateNotice(noticeDto);	
+		
+	}
+
+	@Override
+	public void noticeDelte(int idx) {
+		
+		noticemapper.DelteNotice(idx);
+		
+	}
+
+	@Override
+	public void noticeReadCount(int idx) {
+		
+		noticemapper.noticeReadCount(idx);
 		
 	}
 

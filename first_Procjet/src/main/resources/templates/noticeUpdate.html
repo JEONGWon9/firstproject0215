@@ -8,38 +8,38 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1 align="center"> 글쓰기 ! </h1><br>
+	<h1 align="center"> 수정하기 ! </h1><br>
 	
 	<h4 align="right"><a th:href="@{/}" style="text-decoration: none;">홈 으로</a></h4>
 	<br><br>
 	
 	<div class="container" >
-	<form method="post" th:href="@{ProWriteNotice}" th:object="${NoticeDTO}" th:action="@{/ProWriteNotice}" >
+	<form method="post" th:object="${NoticeDTO}" th:action="@{/ProUpdateNotice}" >
 		<table class="table table-bordered" >
-		<tr>
+		<tr th:object="${noticeUpdate}">
+			<input type="hidden" name="idx" id="idx" th:value="${noticeUpdate.idx}">
 			<th> 작성자	</th>
-			<td> <input type="text" name="writer" id="writer"  > </td>
+			<td> <input type="text" name="writer" id="writer" th:value="${noticeUpdate.writer}"  > </td>
 			<th> 비밀번호</th>
-			<td> <input type="password" name="pw" id="pw" ></td>
+			<td> <input type="password" name="pw" id="pw" th:value="${noticeUpdate.pw}" readonly="readonly" ></td>
 		</tr>
 		<tr>
 			<th> 제목</th>
-			<td colspan="3"> <input type="text" name="title" id="title" style="width:650px; height:auto;"> </td>
-		</tr>
-		<tr>
-			<th> 첨부파일</th>
-			<td> <input type="file" name="file"> </td>
+			<td colspan="3"> 
+			<input type="text"  th:value="${noticeUpdate.title}"name="title" id="title" style="width:650px; height:auto; ">
+		 </td>
 		</tr>
 		<tr>
 			<th> 내용	</th>
-			
 			<td colspan="3"> 
-			<textarea name="content" id="content" rows="5" cols="40" style="width:650px; height: auto;"></textarea> 
+			<textarea name="content" id="content" th:value="${noticeUpdate.content}" th:text="${noticeUpdate.content}" rows="5" cols="40" style="width:650px; height: auto;">
+			
+			</textarea> 
 			</td>
 		</tr>
 		
 		</table>	
-		<button type="submit" > 글쓰기</button>
+		<button type="submit" > 수정</button>
 		<button type="submit" th:formaction="@{/list}">목록</button>
 		<button type="reset">리셋</button>
 	</form>

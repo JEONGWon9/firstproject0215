@@ -15,12 +15,16 @@ public interface NoticeService {
 	public int SelectNoticeListCount(HttpServletRequest request, NoticeDTO noticeDto) throws Exception;
 
 	
-	public void ProWriteNotice(NoticeDTO noticeDto);
-
-	public void updateReadCount(int idx, HttpSession session);
+	public void ProWriteNotice(NoticeDTO noticeDto);	
 
 
 	public NoticeDTO noticeInfoView(int idx);
+
+	public void noticeUpdate(NoticeDTO noticeDto);
+
+	public void noticeDelte(int idx);
+
+	public void noticeReadCount(int idx);
 	
 	
 

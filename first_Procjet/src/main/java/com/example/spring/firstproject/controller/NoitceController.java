@@ -46,53 +46,87 @@ public class NoitceController {
 		mav.addObject("totalCount", totalCount);
 		mav.addObject("noitceList", noticeList);
 		mav.addObject("noticeDto", noticeDto);
-		
+
 		mav.setViewName("list");
 		return mav;
 	}
 	
-	
-	
-	
-	@RequestMapping(value = "/formWriteNotice",method = RequestMethod.GET)
+	@RequestMapping(value="noticeDelete", method = RequestMethod.GET)
+	public ModelAndView noticeDelete(@RequestParam int idx) throws Exception{
+		System.out.println("Controller - noticeDelete");
+		ModelAndView mav = new ModelAndView();
+		
+		noticeService.noticeDelte(idx);
+		
+		
+		mav.setViewName("redirect:list");
+		
+		return mav;
+	}
+
+
+	@RequestMapping(value = "noticeInfoView", method = RequestMethod.GET)
+	public ModelAndView noticeInfoView(@RequestParam int idx) throws Exception {
+		System.out.println("Controller - noticeInfoView");
+		ModelAndView mav = new ModelAndView();
+
+		noticeService.noticeReadCount(idx);
+		NoticeDTO noticeInfoView = this.noticeService.noticeInfoView(idx);
+
+		mav.addObject("noticeInfoView", noticeInfoView);
+		mav.addObject("idx", noticeService.noticeInfoView(idx));
+		mav.setViewName("noticeInfoView");
+		return mav;
+
+	}
+
+	@RequestMapping(value = "/formWriteNotice", method = RequestMethod.GET)
 	public ModelAndView fromWriteNotice() {
 		System.out.println("Controller - formWriteNotice");
 		ModelAndView mav = new ModelAndView();
-		
+
 		mav.setViewName("formWriteNotice");
 		return mav;
 	}
 	
 	
-	@RequestMapping(value = "noticeInfoView", method = RequestMethod.GET)
-	public ModelAndView noticeInfoView(@RequestParam int idx, HttpSession session)throws Exception{
-		System.out.println("Controller - noticeInfoView");
+	@RequestMapping(value = "noticeUpdate", method = RequestMethod.GET)
+	public ModelAndView noticeUpdate(@RequestParam int idx) throws Exception {
+		System.out.println("Controller - noticeUpdate");
 		ModelAndView mav = new ModelAndView();
 		
-		noticeService.updateReadCount(idx,session);	
+		NoticeDTO noticeUpdate = this.noticeService.noticeInfoView(idx);
+		mav.addObject("noticeUpdate", noticeUpdate);
+		mav.setViewName("noticeUpdate");
 		
-		mav.addObject("idx", noticeService.noticeInfoView(idx));
-		mav.addObject("", mav)
-		
-		mav.setViewName("noticeInfoView");		
 		return mav;
-		
 	}
-	
+
+	@RequestMapping(value = "/ProUpdateNotice", method = RequestMethod.POST)
+	public ModelAndView ProUpdateNotice(@ModelAttribute NoticeDTO noticeDto) throws Exception {
+		System.out.println("Controller - ProUpdateNotice");
+		ModelAndView mav = new ModelAndView();
+
+		noticeService.noticeUpdate(noticeDto);
+
+		System.out.println("toString ===================\n" + noticeDto.toString() + "\n" + "====================");
+
+		int idx = noticeDto.getIdx();
+
+		mav.setViewName("redirect:noticeInfoView?idx=" + idx);
+		return mav;
+
+	}
+
 	@RequestMapping(value = "/ProWriteNotice", method = RequestMethod.POST)
-	public ModelAndView ProWriteNotice(@ModelAttribute NoticeDTO noticeDto) throws Exception{
+	public ModelAndView ProWriteNotice(@ModelAttribute NoticeDTO noticeDto) throws Exception {
 		System.out.println("Controller - ProWriteNotice");
-		ModelAndView mav = new ModelAndView();	
-		
+		ModelAndView mav = new ModelAndView();
+
 		noticeService.ProWriteNotice(noticeDto);
-		
+
 		mav.setViewName("redirect:list");
 		return mav;
 	}
-	
-	
-
-	
-	
 
 }

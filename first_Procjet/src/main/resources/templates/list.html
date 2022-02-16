@@ -5,31 +5,42 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+<script type="text/javascript">
 
+
+function rowClicked(value){
+	
+	location.href="/noticeInfoView?idx="+value;
+}
+</script>
 <title>List View</title>
 </head>
 <body>
 
 	<div>
 		<H1>DB 연동 확인</H1>
-		<table class="table" align="center">
+		<table class="table table-hover" align="center">
 			<thead>
 				<tr>
 					<th>번호</th>
 					<th>글쓴이</th>
 					<th>제목</th>
 					<th>작성일</th>
+					<th>조회수</th>
 				</tr>
 			</thead>
 			<tbody>	
-					<tr th:each="row:${noitceList}" th:onclick="'javascript:rowClicked()">		
+					<tr th:each="row:${noitceList}" th:onclick="'javascript:rowClicked(\''+${row.idx}+'\');'">		
 					<td th:text="${row.idx}"></td>
 					<td th:text="${row.writer}"></td>
 					<td th:text="${row.title}"> </td>
-					<td th:text="${row.writeDate}"></td>			
+					<td th:text="${row.writeDate}"></td>
+					<td th:text="${row.readCount}"></td>	
+							
 				</tr>
 			</tbody>
 		</table>
+			<a class="btn btn-primary" th:href="@{/formWriteNotice}">글쓰기</a>
 	</div>
 
 </body>
