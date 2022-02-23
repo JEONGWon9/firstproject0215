@@ -1,0 +1,34 @@
+helpu 계정
+ctsoft1~3 / 1234
+
+오피스365 계정
+ID: csp@cs21.com
+PW: centum987012!!
+
+구글계정
+csp@cs21.com
+centum12!@
+
+깃계정(관리자)
+admin
+cs21.com!
+
+스캔폴더
+\\192.168.0.23\scan2
+scan / ct1234!
+
+와이파이 비번 
+cs19998666
+
+워크피씨 
+\\192.168.0.51
+workpc/centum9870!
+
+사내 vpn 계정정보( 외부에서 사내망 접근시 )
+ctsoftp01 / dkflahdk@0@0
+
+디딤365
+http://cs21-cloud.3-pod.com/Orders/SvcMng
+
+계정
+ctsoft / eoqkrskfk2016(대박나라2016)

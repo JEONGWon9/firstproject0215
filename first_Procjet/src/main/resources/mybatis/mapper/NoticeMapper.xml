@@ -2,60 +2,155 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
- <!-- 
- namespace :  DB접근 패키지  Interface명 까지 접근위치를 지정
- select id : id는 interface의 메소드 명과 완벽하게 일치! 해야한다.
- 
- -->
- 
-<mapper namespace="com.example.spring.firstproject.mapper.NoticeMapper">
- 
-    <select id="SelectAllList" resultType="hashmap">
-     SELECT * FROM test_jsw
-    </select>
-    
-   <select id="SelectNoticeListCount" resultType="int">
-		SELECT COUNT(*) FROM board_jsw	
+
+<!-- namespace : DB접근 패키지 Interface명 까지 접근위치를 지정 select id : id는 interface의 
+	메소드 명과 완벽하게 일치! 해야한다. -->
+
+<mapper
+	namespace="com.example.spring.firstproject.mapper.NoticeMapper">
+	
+	<sql id="noticeColumns">
+		idx,
+		title,
+		writer,
+		pw,
+		content,
+		readCount,
+		writeDate,
+		grpno,
+		grpord,
+		depth,
+		startd
+	
+	
+	
+	</sql>
+	
+	
+
+	<select id="SelectAllList" resultType="hashmap">
+		SELECT * FROM test_jsw
+	</select>
+
+	<select id="SelectNoticeListCount"
+		parameterType="com.example.spring.firstproject.config.Criteria"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM board_jsw
+	</select>
+
+	<select id="SelectNoticeList"
+		parameterType="com.example.spring.firstproject.config.Criteria"
+		resultType="com.example.spring.firstproject.config.NoticeDTO">
+		<![CDATA[
+		 SELECT * from (
+					select A.*,ROWNUM AS rn
+                    FROM (
+                        SELECT 
+                            *
+                            FROM board_jsw
+                            START with grpord = 0
+                            CONNECT BY PRIOR idx=grpord
+                            ORDER SIBLINGS BY grpno DESC,grpord ASC
+                            )A
+					where rownum <= #{pageNum} * #{amount}                                       
+      )
+      where rn > (#{pageNum}-1) * #{amount}
+		]]>
 	</select>
 	
-	<select id="SelectNoticeList" resultType="com.example.spring.firstproject.config.NoticeDTO">
-	 SELECT * from board_jsw ORDER BY idx DESC
-	</select> 
-	
-	<insert id="ProWriteNotice" parameterType="com.example.spring.firstproject.config.NoticeDTO">
-		INSERT INTO board_jsw 
-		(IDX,TITLE,WRITER,PW,CONTENT,READCOUNT,WRITEDATE,GRPNO,GRPORD,DEPTH)
-		 VALUES
-		  (idx_seq.NEXTVAL,#{title},#{writer},#{pw},#{content},0,sysdate,0,0,0)
-		
+	<select id="SelectMainNoticeList" resultType="com.example.spring.firstproject.config.NoticeDTO">
+	   SELECT 
+	   * 
+	   FROM board_jsw
+	   where SYSDATE BETWEEN startDate AND endDate
+	   ORDER BY idx DESC
+	</select>
+
+	<insert id="ProWriteNotice"
+		parameterType="com.example.spring.firstproject.config.NoticeDTO">
+			<selectKey resultType="int" keyProperty="grpno" order="BEFORE">
+					   SELECT NVL(MAX(idx), 0) + 1 
+      					  FROM board_jsw
+		</selectKey>
+		INSERT INTO board_jsw
+		(IDX,TITLE,WRITER,PW,CONTENT,READCOUNT,WRITEDATE,GRPNO,GRPORD,DEPTH,STARTDATE,ENDDATE)
+		VALUES
+		(IDX_AI.nextval,#{title},#{writer},#{pw},#{content},0,sysdate,#{grpno},0,0,#{startDate},#{endDate})
 	</insert>
 	
-	<select id="noticeInfoView" parameterType="int" resultType="com.example.spring.firstproject.config.NoticeDTO">
-	 SELECT * from board_jsw WHERE idx = #{idx}
-	</select> 
 	
-	<update id="ProUpdateNotice">
-	UPDATE board_jsw SET 
+	
+	<insert id="noticeInsertReply" parameterType="com.example.spring.firstproject.config.NoticeDTO">
+		
+		INSERT INTO board_jsw
+		(IDX,TITLE,WRITER,PW,CONTENT,READCOUNT,WRITEDATE,GRPNO,GRPORD,DEPTH,STARTDATE,ENDDATE)
+		VALUES
+		(IDX_AI.nextval,#{title},#{writer},#{pw},#{content},0,sysdate,#{grpno},#{idx},#{depth}+1,null,null)
+		
+		
+	
+	</insert>
+	
+	
+	
+
+	<insert id="fileUpload">
+		<selectKey keyProperty="idx" resultType="int" order="BEFORE">
+			Select MAX(idx) FROM board_jsw
+		</selectKey>
+
+		INSERT INTO file_jsw (IDX,FILENAME,FILEORIGNNAME,FILEURL,FILENUM)
+		VALUES
+		(#{idx},#{filename},#{fileorignname},#{fileurl},filenum_ai.nextval)
+
+	</insert>
+
+	<select id="noticeInfoView" parameterType="int"
+		resultType="com.example.spring.firstproject.config.NoticeDTO">
+		SELECT * from board_jsw WHERE idx = #{idx}
+	</select>
+
+	<update id="ProUpdateNotice" parameterType="com.example.spring.firstproject.config.NoticeDTO">
+		UPDATE board_jsw SET
 		title=#{title},
 		writer=#{writer},
 		pw=#{pw},
-		content=#{content} 
+		content=#{content},
+		startdate=#{startDate},
+		enddate=#{endDate}
+
 		WHERE idx= #{idx}
-		
-	
+
+
 	</update>
-	
+
 	<update id="noticeReadCount">
-		UPDATE board_jsw SET readcount = readcount+1 WHERE idx = #{idx}	
+		UPDATE board_jsw SET readcount = readcount+1 WHERE
+		idx = #{idx}
 	</update>
+
+	<select id="fileDetail" parameterType="int"
+		resultType="com.example.spring.firstproject.config.FileDTO">
+
+		SELECT * FROM file_jsw WHERE idx=#{idx}
+	</select>
+	<select id="fileDown" parameterType="int"
+		resultType="com.example.spring.firstproject.config.FileDTO">
+		SELECT * FROM file_jsw WHERE filenum=#{filenum}	
 	
-	
-	
+	</select>
+
+
+
 	<delete id="DelteNotice">
-		DELETE FROM board_jsw WHERE idx=#{idx}	
-	
+		DELETE FROM board_jsw WHERE idx=#{idx}
+
 	</delete>
- 
+	
+	<delete id="fileDelte">
+		DELETE FROM file_jsw WHERE idx=#{idx}
+	</delete>
+
 </mapper>
 

@@ -8,18 +8,25 @@ import lombok.Data;
 
 @Data
 public class NoticeDTO {
+	 
 	
-	
-	private int idx;
-	private String title;
-	private String writer;
-	private String pw;
-	private String content;
-	private int readCount;
-	private Date writeDate;
+	private int idx;		//	번호
+	private String title;	//  제목	
+	private String writer;	//  작성자
+	private String pw;		// 	비밀번호
+	private String content; // 	내용
+	private int readCount; 	// 	조회수
+	private Date writeDate; // 	작성일
 	private int grpno;
 	private int grpord;
-	private int depth;
+	private int depth;		//  띄움
+	
+	private String startDate;
+	private String endDate;
+	
+	
+	
+	//-----------------------------------------//
 	
 	
 	

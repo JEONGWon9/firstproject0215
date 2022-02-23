@@ -14,7 +14,7 @@
 	<br><br>
 	
 	<div class="container" >
-	<form method="post" th:object="${NoticeDTO}" th:action="@{/ProUpdateNotice}" >
+	<form method="post" enctype="multipart/form-data" th:object="${NoticeDTO}" th:action="@{/ProUpdateNotice}" >
 		<table class="table table-bordered" >
 		<tr th:object="${noticeUpdate}">
 			<input type="hidden" name="idx" id="idx" th:value="${noticeUpdate.idx}">
@@ -30,6 +30,16 @@
 		 </td>
 		</tr>
 		<tr>
+			<th>공지 기간</th>
+			<td><span th:text="${noticeUpdate.startDate}"></span> ~ <br><span th:text="${noticeUpdate.endDate}"></span></td>
+			<td colspan="3"><input type="date" th:value="${noticeUpdate.startDate}" name="startDate" id="startDate"> ~ <br><input type="date" th:value="${noticeUpdate.endDate}" name="endDate" id="endDate"></td>				
+		</tr>
+		<tr>
+			<th> 첨부파일</th>
+			<td colspan="3" ><input type="file" name="files" id="files"> </td>
+			
+		</tr>
+		<tr>
 			<th> 내용	</th>
 			<td colspan="3"> 
 			<textarea name="content" id="content" th:value="${noticeUpdate.content}" th:text="${noticeUpdate.content}" rows="5" cols="40" style="width:650px; height: auto;">
@@ -40,7 +50,7 @@
 		
 		</table>	
 		<button type="submit" > 수정</button>
-		<button type="submit" th:formaction="@{/list}">목록</button>
+		<a class="btn btn-primary" th:href="@{/list}">목록</a>
 		<button type="reset">리셋</button>
 	</form>
 	</div>
