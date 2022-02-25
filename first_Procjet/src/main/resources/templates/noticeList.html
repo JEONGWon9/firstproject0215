@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+	crossorigin="anonymous"></script>
+<script type="text/javascript">
+	function rowClicked(value) {
+
+		location.href = "/noticeInfoView?idx=" + value;
+	}
+	
+	
+</script>
+<title>List View</title>
+</head>
+<body>
+
+	<div class="container">
+	
+		<br>
+		<h1 align="center"><a th:href=@{/noticeList} style=" text-decoration: none; color:maroon; font-weight: bold;">공지사항</a></h1>
+		<table class="table table-hover table-bordered mt-5" >
+			<thead>
+				<tr>
+					<th>번호</th>
+					<th>제목</th>
+					<th>글쓴이</th>
+					<th>작성일</th>
+					<th>조회수</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="table-warning text-success" >
+					<td align="center" colspan="5" style="font-weight: bold; color: red;"> 메인공지</td>
+				</tr>
+				<tr class="table-warning text-success"style="font-weight: bold;"  th:each="ma:${main}" th:onclick="'javascript:rowClicked(\''+${ma.idx}+'\');'">
+					<td th:text="'★  '+${ma.idx}"></td>
+					<td class="text-overflow" style="width: 60%" align="center" th:text="${ma.title}"></td>
+					<td th:text="${ma.writer}" style="width: 10%"></td>
+					<td th:text="${ma.writeDate}" style="width: 10%"></td>
+					<td th:text="${ma.readCount}" style="width: 10%"></td>
+				</tr>
+			
+				<tr th:each="row:${noitceList}"
+					th:onclick="'javascript:rowClicked(\''+${row.idx}+'\');'">
+					<td th:text="${row.idx}"></td>
+					<td class="text-overflow">					
+						<div th:if="${row.depth}>0" th:each="re:${#numbers.sequence(1,row.depth)}" 						
+						th:text="${row.depth}==${re} ? '&nbsp;&nbsp;ㄴRE::&nbsp; ':'&nbsp;&nbsp;&nbsp;&nbsp;'" style="float: left; color: green; font-weight: bold;">	
+						</div>
+						<div style="display: flex;"></div>
+						<div th:text="${row.title}"></div>
+					</td>
+					<td th:text="${row.writer}"></td>	
+					<td th:text="${row.writeDate}"></td>
+					<td th:text="${row.readCount}"></td>						
+
+				</tr>
+			</tbody>
+		</table>
+		
+	
+	
+	<div>
+    	<form method="get">
+    	 <select name ="amount" id="amount" style="float: right;" onchange="this.form.submit();">
+    	 	<option value="10" selected="selected">페이지당 갯수</option>
+		 	<option value="5">5개씩 보기</option>
+		 	<option value="10">10개씩 보기</option>
+		 	<option value="15">15개씩 보기</option>		 
+		 </select>
+		<nav class="page navigation" >
+		
+              <ul class="pagination justify-content-center">
+              
+              <li th:if="${pageMaker.prev} == true" class="page-item">
+              	<a class="page-link"  th:href="@{/noticeList(pageNum=${pageMaker.startPage}-1,amount=${pageMaker.cri.amount},keyword=${pageMaker.cri.keyword})}">&laquo;</a>
+              </li>
+              
+              <li class="page-item" th:each="num:${#numbers.sequence(pageMaker.startPage,pageMaker.endPage)}"
+                th:classappend="${pageMaker.cri.pageNum} == ${num} ? active : null">
+                <a  class="page-link" th:href="@{noticeList(pageNum=${num},amount=${pageMaker.cri.amount},keyword=${pageMaker.cri.keyword})}" th:text="${num}"></a>
+              </li>
+                
+              <li class="page-item" th:if="${pageMaker.next} == true and ${pageMaker.endPage > 0}">
+              	<a class="page-link"  th:href="@{noticeList(pageNum=${pageMaker.endPage}+1,amount=${pageMaker.cri.amount},keyword=${pageMaker.cri.keyword})}">&raquo;</a>
+              </li>
+              
+              </ul>
+    	</nav>    
+    	
+		
+    		
+    	
+			<div class="search_wrap"> 		
+			<input type="text" id="keyword" name="keyword" placeholder="검색어를 입력해주세요" th:value="${pageMaker.cri.keyword}" > 
+			<input type="hidden" name="pageNum" th:value="${pageMaker.cri.pageNum}">
+			<input type="hidden" name="amount" th:value="${pageMaker.cri.amount}">
+			 <button class="btn btn-primary" type="submit">검색</button>
+			 <a class="btn btn-primary" style="float: right;" th:href="@{/noticeWriteForm}">글쓰기</a> 
+			</div>
+		</form>    	
+    </div>
+   </div>
+
+</body>
+</html>
+

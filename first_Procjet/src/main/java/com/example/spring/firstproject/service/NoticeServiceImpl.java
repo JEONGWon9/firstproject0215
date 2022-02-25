@@ -35,9 +35,9 @@ public class NoticeServiceImpl implements NoticeService{
 	}
 
 	@Override
-	public int SelectNoticeListCount(NoticeDTO noticeDto) throws Exception {
+	public int SelectNoticeListCount(NoticeDTO noticeDto,Criteria cri) throws Exception {
 		// TODO Auto-generated method stub
-		return noticemapper.SelectNoticeListCount();
+		return noticemapper.SelectNoticeListCount(cri);
 	}
 
 	@Override
@@ -147,6 +147,8 @@ public class NoticeServiceImpl implements NoticeService{
 		noticemapper.fileDelte(idx);
 		
 	}
+
+	
 
 	
 

@@ -60,14 +60,14 @@ public class NoitceController {
 //						공지 리스트
 //-------------------------------------------------------------
 	
-	@RequestMapping(value="/list", method = RequestMethod.GET)
-	public String list(@ModelAttribute("cri") Criteria cri , Model model,NoticeDTO noticeDto) throws Exception {
+	@RequestMapping(value="/noticeList", method = RequestMethod.GET)
+	public String noticeList(@ModelAttribute("cri") Criteria cri , Model model,NoticeDTO noticeDto) throws Exception {
 		
 		model.addAttribute("noitceList",noticeService.SelectNoticeList(noticeDto, cri));		
-		model.addAttribute("pageMaker", new pageDTO(noticeService.SelectNoticeListCount(noticeDto), 10, cri));
+		model.addAttribute("pageMaker", new pageDTO(noticeService.SelectNoticeListCount(noticeDto,cri), 10, cri));
 		model.addAttribute("main", noticeService.SelectMainNoticeList(noticeDto));
 		
-		return "/list";
+		return "/noticeList";
 	}
 	
 
@@ -79,7 +79,9 @@ public class NoitceController {
 		ModelAndView mav = new ModelAndView();
 		
 		NoticeDTO noticeinfo = this.noticeService.noticeInfoView(idx);
-		mav.addObject("noticeInfo", noticeinfo);
+		
+		mav.addObject("noticeInfo", noticeinfo);		
+		
 		
 		mav.setViewName("noticeReply");
 		return mav;		
@@ -93,14 +95,16 @@ public class NoitceController {
 		ModelAndView mav = new ModelAndView();
 		
 		noticeService.noticeInsertReply(noticeDto);
+	
+				
 		
-		mav.setViewName("redirect:list");
+		mav.setViewName("redirect:noticeList");
 				
 		return mav;
 	}
 	
 //-------------------------------------------------------------
-//						공지 삭제(데이터 파일 삭제)
+//				게시물 삭제(데이터 파일 삭제)
 //-------------------------------------------------------------	
 
 	@RequestMapping(value = "noticeDelete", method = RequestMethod.GET)
@@ -127,7 +131,7 @@ public class NoitceController {
 		
 		noticeService.noticeDelte(idx);
 
-		mav.setViewName("redirect:list");
+		mav.setViewName("redirect:noticeList");
 
 		return mav;
 	}
@@ -159,12 +163,12 @@ public class NoitceController {
 //-------------------------------------------------------------
 //					공지 게시물 쓰기(web)
 //-------------------------------------------------------------
-	@RequestMapping(value = "/formWriteNotice", method = RequestMethod.GET)
-	public ModelAndView fromWriteNotice() {
-		System.out.println("Controller - formWriteNotice");
+	@RequestMapping(value = "/noticeWriteForm", method = RequestMethod.GET)
+	public ModelAndView noticeWriteForm() {
+		System.out.println("Controller - noticeWriteForm");
 		ModelAndView mav = new ModelAndView();
 
-		mav.setViewName("formWriteNotice");
+		mav.setViewName("noticeWriteForm");
 		return mav;
 	}
 	
@@ -217,7 +221,7 @@ public class NoitceController {
 				noticeService.ProWriteNotice(noticeDto);
 				System.out.println("글작성완료");
 				if(mul.size()<0 && mul.get(0).getOriginalFilename().equals("")) {
-					return "redirect:list";
+					return "redirect:noticeList";
 				}
 				else { //(mul.size()>0 && !mul.get(0).getOriginalFilename().equals("")) 
 				
@@ -256,7 +260,7 @@ public class NoitceController {
 			// TODO: handle exception
 		}
 		
-		return "redirect:list";
+		return "redirect:noticeList";
 	}
 	
 //-------------------------------------------------------------
@@ -350,15 +354,35 @@ public class NoitceController {
 
 	}
 
-	/*
-	 * // 드래그 모달창.
-	 * 
-	 * @RequestMapping(value = "dragUpload", method = RequestMethod.GET) public
-	 * ModelAndView dragUpload() { ModelAndView mav = new ModelAndView();
-	 * 
-	 * mav.setViewName("dragUpload"); return mav;
-	 * 
-	 * }
-	 */
+	
+	 // 드래그 모달창.
+	  
+	  @RequestMapping(value = "dragUpload", method = RequestMethod.GET) 
+	  ModelAndView dragUpload() {
+		  
+		  ModelAndView mav = new ModelAndView();
+	  
+	  mav.setViewName("dragUpload"); 
+	  
+	  return mav;
+	  
+	  }	
+	  
+//-------------------------------------------------------------
+//		Test
+//-------------------------------------------------------------
+	  
+	  @RequestMapping(value = "testjQuery", method = RequestMethod.GET) 
+	  ModelAndView testjQeury() {
+		  
+		  ModelAndView mav = new ModelAndView();
+	  
+	  mav.setViewName("testjQuery"); 
+	  
+	  return mav;
+	  
+	  }	
+	  
+
 
 }

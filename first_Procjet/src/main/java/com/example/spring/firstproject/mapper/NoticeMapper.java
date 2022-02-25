@@ -20,7 +20,7 @@ public interface NoticeMapper {
 	
 	List<NoticeDTO> SelectMainNoticeList();
 	
-	int SelectNoticeListCount();        // 카운트 
+	int SelectNoticeListCount(Criteria cri);        // 카운트 
 
 	void ProWriteNotice(NoticeDTO noticeDto);      // 글쓰기 
 	
@@ -34,15 +34,17 @@ public interface NoticeMapper {
 
 	void noticeReadCount(int idx);				// 조회수
 
-	void ProFileWriteNotice(NoticeDTO noticeDto);
+	void ProFileWriteNotice(NoticeDTO noticeDto); //파일 업로드 +글쓰기(안씀)
 
-	void fileUpload(FileDTO fileDto);
+	void fileUpload(FileDTO fileDto); // 파일 업로드
 	
-	List<FileDTO> fileDetail(int idx);
+	List<FileDTO> fileDetail(int idx); // 파일 디테일
 	
-	FileDTO fileDown(int filenum);
+	FileDTO fileDown(int filenum); // 파일다운로드
 	
-	void fileDelte(int idx);
+	void fileDelte(int idx);  // 파일 삭제 
+
+
 	
 	
 

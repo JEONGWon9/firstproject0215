@@ -15,7 +15,7 @@ public interface NoticeService {
 
 	public List<NoticeDTO> SelectNoticeList(NoticeDTO noticeDto,Criteria cri) throws Exception;
 
-	public int SelectNoticeListCount(NoticeDTO noticeDto) throws Exception;
+	public int SelectNoticeListCount(NoticeDTO noticeDto,Criteria cri) throws Exception;
 
 	public List<NoticeDTO>SelectMainNoticeList(NoticeDTO noticeDto) throws Exception;
 	
@@ -41,7 +41,7 @@ public interface NoticeService {
 	public FileDTO fileDown(int filenum);
 	
 	public void fileDelete(int idx);
-	
+
 
 	
 	

@@ -9,7 +9,8 @@ public class Criteria {
 	private int pageNum; //현재페이지 번호
 	private int amount; // 페이지당 출력할 갯수
 	
-	private String type;
+	
+	
 	private String keyword;
 	
 	

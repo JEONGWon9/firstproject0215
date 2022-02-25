@@ -43,13 +43,22 @@
 		</tr>
 		<tr>
 			<th> 내용	</th>
-			<td colspan="4" th:text="${noticeInfoView.content}"> 			
-			</td>
+			
+			
+			<td colspan="3" style="white-space: pre;" th:text="${noticeInfoView.content}"></td>
+<!-- 			<td> -->
+<!-- 			<th:block th:if="${file}" th:each="files:${file}">	 -->
+<!-- 				<th:block th:if="${#strings.endsWith(${files.filename},'.jpg')}"> -->
+<!-- 					<img th:src="@{/webapp/upload/}+${files.filename}" alt="나오나"><br> -->
+<!-- 				</th:block> -->
+<!-- 			</th:block>	 -->
+<!-- 			</td> -->
+					
 		</tr>
 		
 		</table>
 		
-		<a class="btn btn-primary" th:href="@{/list}">목록</a>
+		<a class="btn btn-primary" th:href="@{/noticeList}">목록</a>
 		<a class="btn btn-warning" th:href="@{/noticeUpdate(idx=${noticeInfoView.idx})}" >수정</a>
 		<a class="btn btn-primary" th:href="@{/noticeReply(idx=${noticeInfoView.idx})}" >답글</a>
 		<a class="btn btn-danger" th:href="@{/noticeDelete(idx=${noticeInfoView.idx})}" >삭제 </a>

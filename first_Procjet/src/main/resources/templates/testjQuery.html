@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<title>jQuery Test</title>
+
+<script type="text/javascript">
+
+
+
+
+	$(function() {
+		$("#sizeBtn").on("click", function() {
+			$("#fontSizeUp").css("fontSize", "30px");
+
+		});
+		$("#colorBtn").on("click",function() {
+			$("#fontSizeUp").css("color","red");
+			
+		})
+	})
+</script>
+</head>
+<body>
+
+	<div class="container">
+		<h1 align="center">TEST jQuery</h1>
+
+		<p>
+			뭐지?<span id="fontSizeUp"> 응애 </span> 뭐지?
+		</p>
+		<button id="sizeBtn" >크기 키우기</button>
+		<button id="colorBtn" >색 변경</button>	
+
+	</div>
+
+</body>
+</html>

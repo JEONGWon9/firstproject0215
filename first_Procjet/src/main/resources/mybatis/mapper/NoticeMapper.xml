@@ -19,11 +19,7 @@
 		writeDate,
 		grpno,
 		grpord,
-		depth,
-		startd
-	
-	
-	
+		depth,	
 	</sql>
 	
 	
@@ -31,12 +27,17 @@
 	<select id="SelectAllList" resultType="hashmap">
 		SELECT * FROM test_jsw
 	</select>
+	
+	
 
 	<select id="SelectNoticeListCount"
 		parameterType="com.example.spring.firstproject.config.Criteria"
 		resultType="int">
 		SELECT COUNT(*)
 		FROM board_jsw
+		<if test="keyword !=null">
+			WHERE title like '%'||#{keyword}||'%'
+		</if>
 	</select>
 
 	<select id="SelectNoticeList"
@@ -48,7 +49,12 @@
                     FROM (
                         SELECT 
                             *
-                            FROM board_jsw
+                            FROM board_jsw  
+       	 ]]>
+                       	<if test="keyword != null">
+                       	WHERE title like '%'||#{keyword}||'%'
+                       	</if>        
+    	<![CDATA[            
                             START with grpord = 0
                             CONNECT BY PRIOR idx=grpord
                             ORDER SIBLINGS BY grpno DESC,grpord ASC
@@ -143,10 +149,21 @@
 
 
 
-	<delete id="DelteNotice">
-		DELETE FROM board_jsw WHERE idx=#{idx}
-
+	<delete id="DelteNotice" parameterType="int">
+		DELETE FROM board_jsw WHERE idx in (
+			SELECT idx from board_jsw
+			start with idx= #{idx}
+        	connect by prior idx=grpord
+		)	
+		
 	</delete>
+	
+	<select id="checkPw">
+		SELECT idx,pw FROM board_jsw WHERE idx=#{idx} and pw=#{pw}	
+	</select>
+	
+	
+	
 	
 	<delete id="fileDelte">
 		DELETE FROM file_jsw WHERE idx=#{idx}
