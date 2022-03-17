@@ -9,8 +9,7 @@
 </head>
 <body>
 	<h1 align="center"> 수정하기 ! </h1><br>
-	
-	<h4 align="right"><a th:href="@{/}" style="text-decoration: none;">홈 으로</a></h4>
+		
 	<br><br>
 	
 	<div class="container" >
@@ -34,11 +33,7 @@
 			<td><span th:text="${noticeUpdate.startDate}"></span> ~ <br><span th:text="${noticeUpdate.endDate}"></span></td>
 			<td colspan="3"><input type="date" th:value="${noticeUpdate.startDate}" name="startDate" id="startDate"> ~ <br><input type="date" th:value="${noticeUpdate.endDate}" name="endDate" id="endDate"></td>				
 		</tr>
-		<tr>
-			<th> 첨부파일</th>
-			<td colspan="3" ><input type="file" name="files" id="files"> </td>
-			
-		</tr>
+		
 		<tr>
 			<th> 내용	</th>
 			<td colspan="3"> 
@@ -49,9 +44,9 @@
 		</tr>
 		
 		</table>	
-		<button type="submit" > 수정</button>
+		<button class="btn btn-primary" type="submit" > 수정</button>
 		<a class="btn btn-primary" th:href="@{/noticeList}">목록</a>
-		<button type="reset">리셋</button>
+		<button class="btn btn-warning" type="reset">리셋</button>
 	</form>
 	</div>
 </body>

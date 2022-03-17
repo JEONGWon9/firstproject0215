@@ -24,6 +24,7 @@
 	
 	
 
+<!-- test -->
 	<select id="SelectAllList" resultType="hashmap">
 		SELECT * FROM test_jsw
 	</select>

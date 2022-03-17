@@ -17,8 +17,8 @@ public class NoticeDTO {
 	private String content; // 	내용
 	private int readCount; 	// 	조회수
 	private Date writeDate; // 	작성일
-	private int grpno;
-	private int grpord;
+	private int grpno;		// 그룹 번호
+	private int grpord;		// 그룹 순서
 	private int depth;		//  띄움
 	
 	private String startDate;

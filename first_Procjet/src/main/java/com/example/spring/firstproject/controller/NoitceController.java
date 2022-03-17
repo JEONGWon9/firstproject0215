@@ -110,9 +110,9 @@ public class NoitceController {
 	@RequestMapping(value = "noticeDelete", method = RequestMethod.GET)
 	public ModelAndView noticeDelete(@RequestParam int idx) throws Exception {
 		System.out.println("Controller - noticeDelete");
-		ModelAndView mav = new ModelAndView();
-		
+		ModelAndView mav = new ModelAndView();		
 		List<FileDTO> fileDto = noticeService.fileDetail(idx);
+		
 		for(int i=0;i<fileDto.size(); i++) {
 			String path = fileDto.get(i).getFileurl()+fileDto.get(i).getFilename();
 			
@@ -214,12 +214,12 @@ public class NoitceController {
 	public String ProWriteNotice(@RequestParam("fileUpload") List<MultipartFile> mul,NoticeDTO noticeDto,HttpServletRequest request) {
 				System.out.println("controller prowriteNotice");
 		FileDTO fileDto = new FileDTO();
-		String path;
-		int insertSucess = 0;
-		try {			
-			if(insertSucess == 0) {
+		String path;	
+		try {					
 				noticeService.ProWriteNotice(noticeDto);
 				System.out.println("글작성완료");
+				
+				
 				if(mul.size()<0 && mul.get(0).getOriginalFilename().equals("")) {
 					return "redirect:noticeList";
 				}
@@ -254,7 +254,7 @@ public class NoitceController {
 						}
 					}
 				
-			}
+			
 			
 		}catch (Exception e) {
 			// TODO: handle exception
@@ -277,25 +277,27 @@ public class NoitceController {
 		FileDTO fileDto = noticeService.fileDown(filenum);
 		
 		try {
-			
-					String fileURL = fileDto.getFileurl();							
-					String savePath = fileURL;
-					System.out.println("=======================================");
-					System.out.println("savePath :: "+savePath);
-					System.out.println("=======================================");
-					
+												
+					String savePath = fileDto.getFileurl();
 					String fileName = fileDto.getFilename();
-					
 					// 실제 내보낼 파일명
 					String fileOriginName = fileDto.getFileorignname();					
+
+					
 					InputStream in = null;
 					OutputStream out = null;
 					File file = null;
-					Boolean skip = false;
+					Boolean skip = false;// 파일 읽기 실패 체크
 					String client = "";
 					
 					try {
+						
+						//파일을 읽어 스트림에 담기.
 						file = new File(savePath, fileName);
+						System.out.println("===========================================");
+						System.out.println("파일 ::  "+file.toString());
+						System.out.println("============================================");
+						
 						in = new FileInputStream(file);
 						
 					} catch (FileNotFoundException fe) {
@@ -303,13 +305,17 @@ public class NoitceController {
 					}
 					
 					client = request.getHeader("User-Agent");
+					//현재 사용자아 어떤 클라이언트 를 사용해서 요청하는지 알아볼수있다.
+					
 					
 					response.reset();
+					//파일 다운로드 헤더 지정.
 					response.setContentType("application/octest-stream");
 					response.setHeader("Content-Dscription", "HTML Generated Data");
 					
 					if (!skip) {
 						
+						//한글 처리.
 						if (client.indexOf("MSIE") != 1) {
 							System.out.println("-------------IE-------------");					
 							response.setHeader("Content-Disposition", "attachment; filename=\""
@@ -320,6 +326,7 @@ public class NoitceController {
 							response.setHeader("Content-Disposition", "attachment; filename=\""
 									+ java.net.URLEncoder.encode(fileOriginName, "UTF-8").replaceAll("\\+", "\\") + "\"");
 						} else {
+							 // ISO-8859-1 인코딩은 대부분의 브라우저에 설정된 기본 문자셋
 							System.out.println("------------그외-------------------");
 							response.setHeader("Content-Disposition", "attachment; filename=\""
 									+ new String(fileOriginName.getBytes("UTF-8"), "ISO8859_1") + "\"");
@@ -328,18 +335,19 @@ public class NoitceController {
 						
 						response.setHeader("Content-Length", "" + file.length());
 						out = response.getOutputStream();
-						byte b[] = new byte[(int) file.length()];
+						byte b[] = new byte[(int) file.length()];// 한번에 1kb 씩 읽는 버퍼
 						int leng = 0;
 						
 						while ((leng = in.read(b)) > 0) {
 							out.write(b, 0, leng);
-						}
+						}//파일 읽어오기.
 						
+					
 					} else {
 						response.setContentType("text/html; charset=UTF-8");						
 						PrintWriter pout = response.getWriter();
 						pout.println("<script>alert('파일을 찾을수 없습니다.'); histroy.back();</script>");
-						pout.flush();
+						pout.flush();// 담아있는 버퍼를 비운다. 비우지않을시 배열에 공백 문자 남아있음.
 					}
 					
 					in.close();

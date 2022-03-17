@@ -200,6 +200,8 @@
                 {
                     var uploadURL = "/ProWriteNotice"; //Upload URL
                     var extraData ={}; //Extra Data.
+                    
+                    
                     var jqXHR=$.ajax({
                             xhr: function() {
                             var xhrobj = $.ajaxSettings.xhr();
@@ -225,35 +227,19 @@
                         data: formData,
                         success: function(data){
                             status.setProgress(100);
-                 
-                            //$("#status1").append("File upload Done<br>");           
+                                         
                         }
                     }); 
+                    console.log("formData :: ");
                  
                     status.setAbort(jqXHR);
                 }
                 
             });
+            
         </script>
-
 <script type="text/javascript">
-function uploadPop(){
-	
-	var width = 500;
-	var height= 500;
-	
-	var left = (window.screen.width/2) - (width/2);
-	var top = (window.screen.height/4);
-	
-	
-	var windowStatus = 'width='+width+', height='+height+', left='+left+', top='+top+', scrollbars=yes, status=yes, resizable=yes, titlebar=yes';
 
-	const url = "/dragUpload";
-	
-	window.open(url,"uploadPop",windowStatus);
-
-}
-	
 function  checkForm() {
 	var checkWriter = document.getElementById("writer");
 	var checkPw = document.getElementById("pw");
@@ -296,9 +282,6 @@ $(document).on("dragover drop", function(e) {
 	<h1 align="center">글쓰기 !</h1>
 	<br>
 
-	<h4 align="right">
-		<a th:href="@{/}" style="text-decoration: none;">홈 으로</a>
-	</h4>
 	<br>
 	<br>
 

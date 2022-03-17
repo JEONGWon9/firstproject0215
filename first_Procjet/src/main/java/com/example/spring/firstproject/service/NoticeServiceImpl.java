@@ -43,15 +43,6 @@ public class NoticeServiceImpl implements NoticeService{
 	@Override
 	public void ProWriteNotice(NoticeDTO noticeDto) {
 	
-		String title = noticeDto.getTitle();
-		String writer = noticeDto.getWriter();
-		String pw = noticeDto.getPw();
-		String content = noticeDto.getContent();
-		
-		noticeDto.setTitle(title);
-		noticeDto.setWriter(writer);
-		noticeDto.setPw(pw);
-		noticeDto.setContent(content);	
 		
 		noticemapper.ProWriteNotice(noticeDto);		
 	}
@@ -64,17 +55,7 @@ public class NoticeServiceImpl implements NoticeService{
 
 
 	@Override
-	public void noticeUpdate(NoticeDTO noticeDto) {
-		int idx = noticeDto.getIdx();		
-		String title = noticeDto.getTitle();
-		String writer = noticeDto.getWriter();	
-		String content = noticeDto.getContent();
-		
-		noticeDto.setIdx(idx);
-		noticeDto.setTitle(title);
-		noticeDto.setWriter(writer);		
-		noticeDto.setContent(content);	
-		
+	public void noticeUpdate(NoticeDTO noticeDto) {		
 		
 		 noticemapper.ProUpdateNotice(noticeDto);	
 		
@@ -94,21 +75,7 @@ public class NoticeServiceImpl implements NoticeService{
 		
 	}
 
-	@Override
-	public void ProFileWriteNotice(NoticeDTO noticeDto) {
-//		String title = noticeDto.getTitle();
-//		String writer = noticeDto.getWriter();
-//		String pw = noticeDto.getPw();
-//		String content = noticeDto.getContent();
-//		
-//		noticeDto.setTitle(title);
-//		noticeDto.setWriter(writer);
-//		noticeDto.setPw(pw);
-//		noticeDto.setContent(content);	
-//		
-//		noticemapper.ProFileWriteNotice(noticeDto);
-		
-	}
+	
 
 	@Override
 	public void FileUpload(FileDTO fileDto) {

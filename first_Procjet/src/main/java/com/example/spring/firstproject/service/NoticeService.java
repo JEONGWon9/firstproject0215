@@ -22,8 +22,7 @@ public interface NoticeService {
 	public void ProWriteNotice(NoticeDTO noticeDto);	
 	
 	public void noticeInsertReply(NoticeDTO noticeDto);
-
-	public void ProFileWriteNotice(NoticeDTO noticeDto);
+	
 
 	public NoticeDTO noticeInfoView(int idx);
 
